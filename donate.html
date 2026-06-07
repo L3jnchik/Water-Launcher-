@@ -3,37 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Донат группы - GribLand</title>
+    <title>Донат - WaterLauncher</title>
     <style>
-        :root { --bg-color: #1a1625; --card-bg: #2d243d; --accent-color: #ff4a75; --text-color: #f3effa; }
+        :root { --bg-color: #0b0f19; --card-bg: #151d30; --accent-color: #00d2ff; --text-color: #e2e8f0; }
         body { font-family: sans-serif; background-color: var(--bg-color); color: var(--text-color); text-align: center; margin:0; padding:0; }
-        header { background: #2d243d; padding: 20px; }
-        header a { color: white; margin: 0 10px; text-decoration: none; }
-        .grid { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 40px; padding: 20px; }
-        .price-card { background: var(--card-bg); padding: 30px; border-radius: 10px; width: 250px; border: 2px solid var(--accent-color); }
-        .price { font-size: 1.8rem; color: #fff; margin: 15px 0; }
+        header { background: #101726; padding: 25px; border-bottom: 1px solid #1e293b; }
+        header a { color: #94a3b8; margin: 0 15px; text-decoration: none; }
+        header a:hover { color: white; }
+        .grid { display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; margin-top: 50px; padding: 20px; }
+        .price-card { 
+            background: var(--card-bg); 
+            padding: 35px; 
+            border-radius: 12px; 
+            width: 280px; 
+            border: 1px solid #1e293b;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .price-card.premium {
+            border-color: var(--accent-color);
+            background: linear-gradient(180deg, #151d30, #0f1624);
+        }
+        .price { font-size: 2rem; color: #fff; margin: 20px 0; font-weight: bold; }
+        .price span { color: var(--accent-color); }
     </style>
 </head>
 <body>
 
     <header>
-        <h2>Привилегии и Донат</h2>
+        <h1>Поддержка проекта WaterLauncher</h1>
         <nav>
             <a href="index.html">На главную</a>
-            <a href="technomagic.html">О сервере</a>
+            <a href="servers.html">О серверах</a>
         </nav>
     </header>
 
     <div class="grid">
         <div class="price-card">
-            <h3>Грибник</h3>
-            <div class="price">149 ₽ / мес</div>
-            <p>Базовый набор ресурсов, префикс в чате и доступ к базовым командам.</p>
+            <h3>Поток (Stream)</h3>
+            <div class="price">190 <span>₽</span></div>
+            <p>Стартовый набор ресурсов, цветной ник в чате, доступ к базовому заполнению инвентаря.</p>
         </div>
-        <div class="price-card">
-            <h3>Мухомор</h3>
-            <div class="price">399 ₽ / мес</div>
-            <p>Увеличенные приваты, полёт (/fly), эксклюзивные киты каждый день.</p>
+        <div class="price-card premium">
+            <h3>Цунами (Tsunami)</h3>
+            <div class="price">450 <span>₽</span></div>
+            <p>Максимальный приоритет при заходе на сервер, режим полета (/fly), сохранение инвентаря после смерти.</p>
         </div>
     </div>
 
