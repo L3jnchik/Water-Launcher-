@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GribLand - Комплекс Minecraft серверов</title>
+    <title>WaterLauncher - Уникальный игровой лаунчер Minecraft</title>
     <style>
         :root {
-            --bg-color: #1a1625;
-            --card-bg: #2d243d;
-            --accent-color: #ff4a75;
-            --text-color: #f3effa;
+            --bg-color: #0b0f19;
+            --card-bg: #151d30;
+            --accent-color: #00d2ff;
+            --accent-gradient: linear-gradient(135deg, #00d2ff, #0072ff);
+            --text-color: #e2e8f0;
         }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Roboto, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
@@ -20,65 +21,92 @@
             text-align: center;
         }
         header {
-            background: linear-gradient(135deg, #4c1d5c, #2d243d);
-            padding: 40px 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            background: linear-gradient(180deg, #101726, #0b0f19);
+            padding: 50px 20px;
+            border-bottom: 1px solid #1e293b;
         }
         nav a {
             color: var(--text-color);
-            margin: 0 15px;
+            margin: 0 20px;
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
             transition: color 0.3s;
         }
         nav a:hover { color: var(--accent-color); }
-        .logo { font-size: 3rem; margin: 10px 0; color: var(--accent-color); text-shadow: 2px 2px 8px #000; }
-        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        .logo { 
+            font-size: 3.5rem; 
+            font-weight: 800;
+            margin: 10px 0; 
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 10px rgba(0,210,255,0.3));
+        }
+        .container { max-width: 1200px; margin: 50px auto; padding: 0 20px; }
         .btn {
-            background-color: var(--accent-color);
+            background: var(--accent-gradient);
             color: white;
-            padding: 15px 35px;
+            padding: 16px 40px;
             border: none;
-            border-radius: 30px;
+            border-radius: 8px;
             font-size: 1.2rem;
+            font-weight: bold;
             cursor: pointer;
             text-decoration: none;
             display: inline-block;
-            box-shadow: 0 4px 15px rgba(255, 74, 117, 0.4);
-            transition: transform 0.2s;
+            box-shadow: 0 4px 20px rgba(0, 114, 255, 0.4);
+            transition: all 0.3s ease;
         }
-        .btn:hover { transform: scale(1.05); }
-        .servers { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 40px; }
-        .server-card { background-color: var(--card-bg); padding: 20px; border-radius: 15px; border: 1px solid #44355b; }
+        .btn:hover { 
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(0, 210, 255, 0.6);
+        }
+        .servers { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; margin-top: 50px; }
+        .server-card { 
+            background-color: var(--card-bg); 
+            padding: 30px; 
+            border-radius: 12px; 
+            border: 1px solid #1e293b;
+            transition: border-color 0.3s;
+        }
+        .server-card:hover {
+            border-color: var(--accent-color);
+        }
+        h2 { font-size: 2.2rem; margin-bottom: 10px; }
+        p { color: #94a3b8; font-size: 1.1rem; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">🍄 GribLand</div>
-        <p>Самый грибной проект Minecraft серверов с модами!</p>
+        <div class="logo">💧 WaterLauncher</div>
+        <p>Технологичный лаунчер и сборки Minecraft нового поколения</p>
         <nav>
             <a href="index.html">Главная</a>
-            <a href="technomagic.html">TechnoMagicRPG</a>
-            <a href="donate.html">Донат</a>
+            <a href="servers.html">Наши Сервера</a>
+            <a href="donate.html">Магазин</a>
         </nav>
     </header>
 
     <div class="container">
-        <h2>Залетай в нашу грибную тусовку!</h2>
-        <p>Мы — уникальные сервера в майне и ждём именно тебя, друг!</p>
-        <a href="technomagic.html" class="btn">Начать играть</a>
+        <h2>Погрузись в чистый геймплей</h2>
+        <p>Собственный лаунчер с автоматической оптимизацией FPS и уникальными модами.</p>
+        <br>
+        <a href="#" class="btn">Скачать лаунчер (.EXE)</a>
 
         <div class="servers">
             <div class="server-card">
-                <h3>texnomagik 1.12.2</h3>
-                <p>Бесконечные миры, продвинутая магия и автоматизация фабрик.</p>
-                <a href="technomagic.html" style="color: var(--accent-color);">Подробнее →</a>
+                <h3>AquaTech 1.20.1</h3>
+                <p>Индустриальная революция на новейшей версии. Автоматизация, кастомные механизмы и улучшенная генерация океанов.</p>
+                <a href="servers.html" style="color: var(--accent-color); text-decoration: none; font-weight: bold;">О сервере →</a>
             </div>
             <div class="server-card">
-                <h3>OneBlock с Модами</h3>
-                <p>Выживание на одном единственном блоке в небесах.</p>
-                <a href="#" style="color: var(--accent-color);">Скоро открытие</a>
+                <h3>OceanBlock</h3>
+                <p>Выживание на крошечном острове посреди бескрайней водной глади. Сможешь ли ты построить империю?</p>
+                <a href="servers.html" style="color: var(--accent-color); text-decoration: none; font-weight: bold;">О сервере →</a>
             </div>
         </div>
     </div>
