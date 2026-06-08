@@ -135,6 +135,7 @@
             <a href="#" target="_blank" class="btn btn-secondary">Наш Discord сервер</a>
         </div>
 
+        <!-- Раздел МЕДИА -->
         <div class="media-section" id="mediaSection">
             <h2>Наши медиа-ресурсы</h2>
             <p>Выбирайте удобную платформу и присоединяйтесь к сообществу!</p>
@@ -168,6 +169,7 @@
         </div>
     </div>
 
+    <!-- Модальное окно Входа / Регистрации -->
     <div class="modal-overlay" id="loginModal">
         <div class="modal-box">
             <div class="close-modal" onclick="closeModal()">&times;</div>
@@ -177,6 +179,7 @@
                 <button class="tab-btn" id="tabRegister" onclick="switchTab('register')">Регистрация</button>
             </div>
             
+            <!-- ФОРМА ВХОДА -->
             <div id="loginFormZone" class="form-content active">
                 <form onsubmit="handleLogin(event)">
                     <div class="input-group">
@@ -191,6 +194,7 @@
                 </form>
             </div>
 
+            <!-- ФОРМА РЕГИСТРАЦИИ -->
             <div id="registerFormZone" class="form-content">
                 <form onsubmit="handleRegister(event)">
                     <div class="input-group">
@@ -204,23 +208,32 @@
                     <button type="submit" class="btn" style="width: 100%;">Создать аккаунт</button>
                 </form>
             </div>
-            Вставьте этот код сразу после Части 1 (в самый низ файла `index.html`). Он отвечает за отправку данных в вашу базу Supabase, проверку сессий и переключение окон.
-```html
+
+            <!-- Блок для вывода ошибок или успехов -->
+            <div id="statusMessage" class="status-msg"></div>
+        </div>
+    </div>
     <script>
-        // Инициализация Supabase вашими личными ключами
+        // Инициализация Supabase личными ключами пользователя
         const SUPABASE_URL = "https://supabase.co";
         const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9yZW5lcmhnY3Bia2VtbGpob2F5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4NTUwNDYsImV4cCI6MjA5NjQzMTA0Nn0.yv6WZxBxGU2AHcrBBUv5y1rOG-T2BV1dN7NFk3JMPhM";
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        
+        // Переменная sb во избежание конфликтов имен
+        const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // Проверка: вошел ли пользователь ранее (при загрузке страницы)
+        // Проверка сессии при загрузке страницы
         window.addEventListener('DOMContentLoaded', async () => {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (session) {
-                updateUIWithUser(session.user.email);
+            try {
+                const { data: { session } } = await sb.auth.getSession();
+                if (session && session.user) {
+                    updateUIWithUser(session.user.email);
+                }
+            } catch (e) {
+                console.error("Ошибка проверки сессии:", e);
             }
         });
 
-        // Функция Регистрации нового игрока
+        // Функция Регистрации
         async function handleRegister(event) {
             event.preventDefault();
             const email = document.getElementById('regEmail').value;
@@ -228,7 +241,7 @@
             const statusMessage = document.getElementById('statusMessage');
             statusMessage.textContent = "Регистрация..."; statusMessage.style.color = "orange";
 
-            const { data, error } = await supabase.auth.signUp({ email, password });
+            const { data, error } = await sb.auth.signUp({ email, password });
 
             if (error) {
                 statusMessage.textContent = "Ошибка: " + error.message;
@@ -240,7 +253,7 @@
             }
         }
 
-        // Функция Входа в существующий аккаунт
+        // Функция Входа
         async function handleLogin(event) {
             event.preventDefault();
             const email = document.getElementById('loginEmail').value;
@@ -248,7 +261,7 @@
             const statusMessage = document.getElementById('statusMessage');
             statusMessage.textContent = "Вход..."; statusMessage.style.color = "orange";
 
-            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+            const { data, error } = await sb.auth.signInWithPassword({ email, password });
 
             if (error) {
                 statusMessage.textContent = "Ошибка: " + error.message;
@@ -256,27 +269,34 @@
             } else {
                 statusMessage.textContent = "Успешный вход!";
                 statusMessage.style.color = "#22c55e";
-                updateUIWithUser(data.user.email);
+                if(data && data.user) {
+                    updateUIWithUser(data.user.email);
+                }
                 setTimeout(closeModal, 1500);
             }
         }
 
-        // Обновление кнопки "Вход" в шапке на имя пользователя
+        // Обновление кнопки "Вход" в шапке
         function updateUIWithUser(email) {
             const navBtn = document.getElementById('navLoginBtn');
-            navBtn.textContent = email.split('@')[0]; // Покажет часть почты до собачки
-            navBtn.style.color = "#22c55e";
-            navBtn.onclick = async () => {
-                if(confirm("Вы хотите выйти из аккаунта?")) {
-                    await supabase.auth.signOut();
-                    window.location.reload();
-                }
-            };
+            if(navBtn && email) {
+                const namePart = email.split('@')[0];
+                navBtn.textContent = namePart;
+                navBtn.style.color = "#22c55e";
+                navBtn.onclick = async () => {
+                    if(confirm("Вы хотите выйти из аккаунта?")) {
+                        await sb.auth.signOut();
+                        window.location.reload();
+                    }
+                };
+            }
         }
 
         // Переключение вкладок Вход / Регистрация
         function switchTab(type) {
-            document.getElementById('statusMessage').textContent = "";
+            const statusMessage = document.getElementById('statusMessage');
+            if(statusMessage) statusMessage.textContent = "";
+            
             if (type === 'login') {
                 document.getElementById('tabLogin').classList.add('active');
                 document.getElementById('tabRegister').classList.remove('active');
@@ -292,11 +312,17 @@
 
         function toggleMedia() {
             const mediaBox = document.getElementById('mediaSection');
-            mediaBox.style.display = (mediaBox.style.display === 'block') ? 'none' : 'block';
-            if(mediaBox.style.display === 'block') mediaBox.scrollIntoView({ behavior: 'smooth' });
+            if(mediaBox) {
+                mediaBox.style.display = (mediaBox.style.display === 'block') ? 'none' : 'block';
+                if(mediaBox.style.display === 'block') mediaBox.scrollIntoView({ behavior: 'smooth' });
+            }
         }
         function openModal() { document.getElementById('loginModal').classList.add('active'); }
-        function closeModal() { document.getElementById('loginModal').classList.remove('active'); document.getElementById('statusMessage').textContent=""; }
+        function closeModal() { 
+            document.getElementById('loginModal').classList.remove('active'); 
+            const statusMessage = document.getElementById('statusMessage');
+            if(statusMessage) statusMessage.textContent=""; 
+        }
     </script>
 </body>
-        </html>
+</html>
