@@ -213,15 +213,15 @@
             <div id="statusMessage" class="status-msg"></div>
         </div>
     </div>
-    <script>
-        // Инициализация Supabase личными ключами пользователя
-        const SUPABASE_URL = "https://supabase.co";
-        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9yZW5lcmhnY3Bia2VtbGpob2F5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4NTUwNDYsImV4cCI6MjA5NjQzMTA0Nn0.yv6WZxBxGU2AHcrBBUv5y1rOG-T2BV1dN7NFk3JMPhM";
+        <script>
+        // Инициализация Supabase вашими новыми рабочими ключами
+        const SUPABASE_URL = "https://orenerhgcpbkemljhoay.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_JoffjTUUjZ8rpojpAnUraA_ZXhAaiBp";
         
-        // Переменная sb во избежание конфликтов имен
+        // Создаем подключение к базе данных
         const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // Проверка сессии при загрузке страницы
+        // Проверка сохраненной сессии при входе на сайт
         window.addEventListener('DOMContentLoaded', async () => {
             try {
                 const { data: { session } } = await sb.auth.getSession();
@@ -241,15 +241,19 @@
             const statusMessage = document.getElementById('statusMessage');
             statusMessage.textContent = "Регистрация..."; statusMessage.style.color = "orange";
 
-            const { data, error } = await sb.auth.signUp({ email, password });
-
-            if (error) {
-                statusMessage.textContent = "Ошибка: " + error.message;
+            try {
+                const { data, error } = await sb.auth.signUp({ email, password });
+                if (error) {
+                    statusMessage.textContent = "Ошибка: " + error.message;
+                    statusMessage.style.color = "#ff4a75";
+                } else {
+                    statusMessage.textContent = "Аккаунт создан! Войдите в него.";
+                    statusMessage.style.color = "#00d2ff";
+                    switchTab('login');
+                }
+            } catch (err) {
+                statusMessage.textContent = "Сбой сети: " + err.message;
                 statusMessage.style.color = "#ff4a75";
-            } else {
-                statusMessage.textContent = "Аккаунт успешно создан! Войдите в него.";
-                statusMessage.style.color = "#00d2ff";
-                switchTab('login');
             }
         }
 
@@ -261,26 +265,30 @@
             const statusMessage = document.getElementById('statusMessage');
             statusMessage.textContent = "Вход..."; statusMessage.style.color = "orange";
 
-            const { data, error } = await sb.auth.signInWithPassword({ email, password });
-
-            if (error) {
-                statusMessage.textContent = "Ошибка: " + error.message;
-                statusMessage.style.color = "#ff4a75";
-            } else {
-                statusMessage.textContent = "Успешный вход!";
-                statusMessage.style.color = "#22c55e";
-                if(data && data.user) {
-                    updateUIWithUser(data.user.email);
+            try {
+                const { data, error } = await sb.auth.signInWithPassword({ email, password });
+                if (error) {
+                    statusMessage.textContent = "Ошибка: " + error.message;
+                    statusMessage.style.color = "#ff4a75";
+                } else {
+                    statusMessage.textContent = "Успешный вход!";
+                    statusMessage.style.color = "#22c55e";
+                    if(data && data.user) {
+                        updateUIWithUser(data.user.email);
+                    }
+                    setTimeout(closeModal, 1500);
                 }
-                setTimeout(closeModal, 1500);
+            } catch (err) {
+                statusMessage.textContent = "Сбой сети: " + err.message;
+                statusMessage.style.color = "#ff4a75";
             }
         }
 
-        // Обновление кнопки "Вход" в шапке
+        // Изменение текста "Вход" в меню на имя пользователя
         function updateUIWithUser(email) {
             const navBtn = document.getElementById('navLoginBtn');
             if(navBtn && email) {
-                const namePart = email.split('@')[0];
+                const namePart = email.split('@')[0]; // Показывает имя до знака @
                 navBtn.textContent = namePart;
                 navBtn.style.color = "#22c55e";
                 navBtn.onclick = async () => {
@@ -292,7 +300,7 @@
             }
         }
 
-        // Переключение вкладок Вход / Регистрация
+        // Логика переключения между вкладками Вход / Регистрация
         function switchTab(type) {
             const statusMessage = document.getElementById('statusMessage');
             if(statusMessage) statusMessage.textContent = "";
@@ -326,3 +334,5 @@
     </script>
 </body>
 </html>
+
+                    
